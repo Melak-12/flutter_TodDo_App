@@ -13,10 +13,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'My Tasks',
+      // title: 'My s',
       theme: ThemeData(
-        primaryColor: const Color.fromARGB(255, 8, 85, 68),
-      ),
+          // primaryColor: const Color.fromARGB(255, 8, 85, 68),
+          ),
       home: const HomePage(),
     );
   }

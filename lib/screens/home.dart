@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
               icon: const Icon(Icons.menu),
             ),
             const Text(
-              "My Tasks",
+              "Tasks",
               style: TextStyle(fontSize: 32),
             ),
             SizedBox(
@@ -234,15 +234,19 @@ class _HomePageState extends State<HomePage> {
   }
 
   void addTodoItem(String todo) {
-    setState(() {
-      todolist.add(
-        Todo(
-          id: DateTime.now().millisecondsSinceEpoch.toString(),
-          todoText: todo,
-        ),
-      );
-    });
-    todoContoller.clear();
+    if (todo.isNotEmpty) {
+      setState(() {
+        todolist.add(
+          Todo(
+            id: DateTime.now().millisecondsSinceEpoch.toString(),
+            todoText: todo,
+          ),
+        );
+      });
+      todoContoller.clear();
+    } else {
+      yo(context);
+    }
   }
 
   void searchedItem(String entryKeyBoard) {
@@ -260,4 +264,32 @@ class _HomePageState extends State<HomePage> {
       foudTodo = results;
     });
   }
+}
+
+void yo(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Alert'),
+        content: const Text(
+          "don't fucking add empty space !",
+          style: TextStyle(color: Colors.red),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text(
+              'OK',
+              style: TextStyle(
+                color: Colors.green,
+              ),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
