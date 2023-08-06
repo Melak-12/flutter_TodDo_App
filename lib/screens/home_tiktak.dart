@@ -29,7 +29,7 @@ class _GameHomeState extends State<GameHome> {
   int filledBoxes = 0;
   bool winnerFound = false;
   int attempt = 0;
-  static const maxSeconds = 15;
+  static const maxSeconds = 20;
   int seconds = maxSeconds;
   Timer? timer;
   void startTimer() {
@@ -61,6 +61,16 @@ class _GameHomeState extends State<GameHome> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
+            Container(
+              alignment: Alignment.topRight,
+              child: GestureDetector(
+                onTap: () => {showAlert()},
+                child: Icon(
+                  Icons.info,
+                  color: Colors.green[500],
+                ),
+              ),
+            ),
             const Padding(padding: EdgeInsets.only(left: 43)),
             Expanded(
               flex: 1,
@@ -73,7 +83,7 @@ class _GameHomeState extends State<GameHome> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         const Text(
-                          "Player O",
+                          "Player A",
                           style: TextStyle(
                             color: Color.fromARGB(255, 0, 255, 238),
                           ),
@@ -94,7 +104,7 @@ class _GameHomeState extends State<GameHome> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         const Text(
-                          "Player X",
+                          "Player B",
                           style: TextStyle(
                             color: Color.fromARGB(255, 0, 255, 238),
                           ),
@@ -134,7 +144,7 @@ class _GameHomeState extends State<GameHome> {
                           ),
                           color: matchedIndex.contains(index)
                               ? Colors.green
-                              : Color.fromARGB(255, 102, 112, 120),
+                              : const Color.fromARGB(255, 102, 112, 120),
                         ),
                         child: Center(
                           child: Text(
@@ -171,15 +181,39 @@ class _GameHomeState extends State<GameHome> {
     );
   }
 
+  void showAlert() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: const Color.fromARGB(255, 60, 168, 141),
+            title: const Text("Developed by "),
+            content: const Text(
+                'Melaku Abebe \nTelegram @Melak_12\nemail:Melakabebeee@gmail.com\n\nEnjoy the game!'),
+            contentTextStyle:
+                const TextStyle(color: Color.fromARGB(255, 41, 43, 47)),
+            actions: [
+              TextButton(
+                onPressed: () => {Navigator.of(context).pop()},
+                child: const Text(
+                  'ok',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
   void _tapped(int index) {
     final isRunning = timer == null ? false : timer!.isActive;
     if (isRunning) {
       setState(() {
         if (oTurn && displayXO[index] == '') {
-          displayXO[index] = 'O';
+          displayXO[index] = 'A';
           filledBoxes++;
         } else {
-          displayXO[index] = 'X';
+          displayXO[index] = 'B';
           filledBoxes++;
         }
         oTurn = !oTurn;
@@ -322,6 +356,7 @@ class _GameHomeState extends State<GameHome> {
         updateScore(displayXO[2]);
       });
     }
+
     if (!winnerFound && filledBoxes == 9) {
       setState(() {
         resultDeclaration = "No one Wins!";
@@ -331,11 +366,12 @@ class _GameHomeState extends State<GameHome> {
   }
 
   void updateScore(String winner) {
-    if (winner == "O") {
+    if (winner == "A") {
       oScore++;
-    } else if (winner == "X") {
+    } else if (winner == "B") {
       xscore++;
     }
+
     winnerFound = true;
   }
 
